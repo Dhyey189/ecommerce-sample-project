@@ -1,0 +1,63 @@
+<h2>Create Customer</h2>
+<form method="post">{% csrf_token %}
+    <input type = "text" name = "name" placeholder = "Name"/>
+    <input type = "text" name = "email" placeholder = "email"/>
+    <input type = "text" name = "address" placeholder = "address"/>
+    <input type = "text" name = "mobile" placeholder = "mobile"/>
+    <input type = "submit" name= "Create" value = "Create">
+</form>
+
+<h2>Find Customer by ID</h2>
+<form method="get">{% csrf_token %}
+    <input type = "text" name = "id" placeholder = "Enter customer ID"/>
+    <input type = "submit" name="Find" value = "Find">
+</form >
+{% if process == 'get' %}
+<table style="width:70%">
+    <tr align="center">
+      <th>customer_id</th>
+      <th>name</th>
+      <th>email</th>
+      <th>address</th>
+      <th>mobile</th>
+    </tr>
+        <tr align="center">
+            {% for i  in customer %}
+                    <td>{{i.customer_id}}</td>
+                    <td>{{i.name}}</td>
+                    <td>{{i.email}}</td>
+                    <td>{{i.address}}</td>
+                    <td>{{i.mobile}}</td>
+            {% endfor %}
+        </tr>
+    
+  </table>
+{% endif %}
+
+<h2>Update or Delete customer details</h2>
+<table style="width:100%">
+    <tr align="center">
+      <th>customer_id</th>
+      <th>name</th>
+      <th>email</th>
+      <th>address</th>
+      <th>mobile</th>
+    </tr>
+        {% for i in Customer %}
+        <tr align="center">
+            <form method="post">{% csrf_token %}
+                <td>{{i.customer_id}}</td>
+                <input type="hidden" name="method" value ="put">
+                <input type="hidden" name="id" value = {{i.customer_id}}>
+                <td><input type = "text" name="name" value = {{i.name}}></td>
+                <td><input type = "text" name="email" value = {{i.email}}></td>
+                <td><input type = "text" name="address" value = {{i.address}}></td>
+                <td><input type = "text" name="mobile" value = {{i.mobile}}></td>
+                <td><input type = "submit" name = "Update" value = "update"></td>
+                <td><input type = "submit" name = "Delete" value = "Delete"></td>
+            </form>
+        </tr>
+        {% endfor %}
+    
+  </table>
+

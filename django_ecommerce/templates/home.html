@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <title>Home</title>
+    </head>
+    <body>
+        <div>
+            <center>Customers</center>
+            <table style="width:100%">
+                <tr align="center">
+                  <th>customer_id</th>
+                  <th>name</th>
+                  <th>email</th>
+                  <th>address</th>
+                  <th>mobile</th>
+                </tr>
+                    {% for i in Customer %}
+                    <tr align="center">
+                        <td>{{i.customer_id}}</td>
+                        <td>{{i.name}}</td>
+                        <td>{{i.email}}</td>
+                        <td>{{i.address}}</td>
+                        <td>{{i.mobile}}</td>
+                    </tr>
+                    {% endfor %}
+                
+              </table>
+              <center><button align="center" onclick="window.location.href='http://127.0.0.1:8000/customer'">Manage Customers</button></center>
+        </div>
+        <div>
+            <form>
+                
+            </form>
+        </div>
+
+    </body>
+</html>
