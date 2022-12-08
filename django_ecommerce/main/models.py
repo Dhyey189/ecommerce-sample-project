@@ -22,14 +22,14 @@ class ProductImage(models.Model):
 
 class Order(models.Model):
     order_id = models.AutoField(primary_key=True)
-    customer_id = models.ForeignKey(Customer,on_delete=models.DO_NOTHING)
+    customer_id = models.ForeignKey(Customer,on_delete=models.CASCADE)
     order_date = models.DateField(auto_now_add=True)
     is_delivered = models.BooleanField(default=False)
 
 class OrderDetails(models.Model): 
     order_details_id = models.AutoField(primary_key=True)
     order_id = models.ForeignKey(Order,on_delete=models.CASCADE)
-    product_id = models.ForeignKey(Product,on_delete=models.DO_NOTHING)
+    product_id = models.ForeignKey(Product,on_delete=models.SET_NULL,null=True)
     product_price = models.IntegerField()
     product_quantity = models.IntegerField()
     subtotal = models.IntegerField()

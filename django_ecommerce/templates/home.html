@@ -26,7 +26,7 @@
               </table>
               <center><button align="center" onclick="window.location.href='http://127.0.0.1:8000/customer'">Manage Customers</button></center>
         </div>
-        <div>
+        <div style="margin:50">
             <center>Products</center>
             <table style="width:100%" border="2">
                 <tr align="center">
@@ -52,8 +52,16 @@
                     {% endfor %}
                 
               </table>
-              <center><button align="center" onclick="window.location.href='http://127.0.0.1:8000/product'">Manage Customers</button></center>
+              <center><button align="center" onclick="window.location.href='http://127.0.0.1:8000/product'">Manage Products</button></center>
         </div>
-
+        <div style="margin:50">
+            <h2>Create Order</h2>
+                <form method="post"  id = "create_product">{% csrf_token %}
+                    <input type = "text" name = "customer_id" placeholder = "Enter Customer ID"/>
+                    <input type = "text" name = "product_id" placeholder = "Enter Product ID"/>
+                    <input type = "text" name = "product_quantity" placeholder = "Enter Product quantity"/>
+                    <input type = "submit" name = "create_order" value = "Create Order"/>
+                </form>
+        </div>
     </body>
 </html>

@@ -3,6 +3,7 @@ from .models import Customer,Order,OrderDetails,Product,ProductImage
 from django.db import transaction
 # Create your views here.
 
+@transaction.atomic
 def home(request):
     customer = list(Customer.objects.all())
     order = list(Order.objects.all())
@@ -10,6 +11,17 @@ def home(request):
     product = list(Product.objects.all())
     productimage = list(ProductImage.objects.all())
     # print(customer)
+    if request.method == 'POST' and 'create_order' in request.POST:
+        product_quantity = request.POST.get('product_quantity')
+        p = Product.objects.get(product_id = int(request.POST.get('product_id')))
+        print(int(request.POST.get('product_id')))
+        c = Customer.objects.get(customer_id = int(request.POST.get('customer_id')))
+        c.save()
+        o = Order(customer_id = c)
+        o.save()
+        od  = OrderDetails(product_price = p.product_price,product_quantity = product_quantity, subtotal = int(p.product_price)*int(product_quantity) , order_id = o, product_id = p) 
+        od.save()
+
     return render(request, 'home.html', {"Customer": customer, "Order": order, "OrderDetails": orderdetails,"Product": product, "ProductImage": productimage})
 
 def manage_customer(request):
@@ -72,8 +84,6 @@ def manage_product(request):
         p = Product(product_name = name,product_desc = desc,product_price = price)
         p.save()
         images_count = int(request.POST.get('images_count'))
-        print(images_count)
-        print(request.POST)
         for i in range(1,images_count+1):
             link = request.POST.get('image'+str(i))
             print('image'+str(i))
@@ -81,10 +91,21 @@ def manage_product(request):
             img.save()
 
     # For deleting existing products
+
     elif request.method == 'POST' and 'Delete' in request.POST:
-        id = request.POST.get('id')
-        p = Product(product_id = id)
-        p.delete() 
+        with transaction.atomic():
+            id = request.POST.get('id')
+            p = Product.objects.get(product_id = int(id))
+            order_to_be_deleted = []
+            order_details = OrderDetails.objects.filter(product_id = p.product_id)
+            order_details = list(order_details)
+            p.delete() 
+            for od in order_details:
+                order_to_be_deleted.append(od.order_id)
+            OrderDetails.objects.filter(product_id = id).delete()
+            for oid in order_to_be_deleted:
+                Order.objects.filter(order_id = oid.order_id).delete()
+            
 
 
     # For updating products
