@@ -3,9 +3,9 @@
         <title>Home</title>
     </head>
     <body>
-        <div>
+        <div style="margin:50">
             <center>Customers</center>
-            <table style="width:100%">
+            <table style="width:100%" border="2">
                 <tr align="center">
                   <th>customer_id</th>
                   <th>name</th>
@@ -27,9 +27,32 @@
               <center><button align="center" onclick="window.location.href='http://127.0.0.1:8000/customer'">Manage Customers</button></center>
         </div>
         <div>
-            <form>
+            <center>Products</center>
+            <table style="width:100%" border="2">
+                <tr align="center">
+                  <th>Product id</th>
+                  <th>Product Name</th>
+                  <th>Product Description</th>
+                  <th>Product Price</th>
+                  <th colspan="100%">Product Images Link</th>
+                </tr>
+                    {% for i in Product %}
+                    <tr align="center">
+
+                        <td>{{i.product_id}}</td>
+                        <td>{{i.product_name}}</td>
+                        <td>{{i.product_desc}}</td>
+                        <td>{{i.product_price}}</td>
+                        {% for j in ProductImage %}
+                            {% if i.product_id == j.product_id.product_id %}
+                                <td >{{j.image}}</td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
                 
-            </form>
+              </table>
+              <center><button align="center" onclick="window.location.href='http://127.0.0.1:8000/product'">Manage Customers</button></center>
         </div>
 
     </body>

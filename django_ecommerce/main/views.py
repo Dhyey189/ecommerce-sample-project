@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import Customer,Order,OrderDetails,Product,ProductImage
+from django.db import transaction
 # Create your views here.
 
 def home(request):
@@ -57,9 +58,47 @@ def manage_customer(request):
 
         # Method 2
         # c = Customer.objects.get(customer_id = request.POST.get('id'))
-        # c.save()
+        # c.delete()
     customer = list(Customer.objects.all())
     return render(request, 'customer.html', {"Customer": customer,'process' : 'donothing'})
+
+@transaction.atomic
+def manage_product(request):
+    # For adding new products in the list
+    if request.method == 'POST' and 'Create' in request.POST:
+        name = request.POST.get('name')
+        desc = request.POST.get('desc')
+        price = request.POST.get('price')
+        p = Product(product_name = name,product_desc = desc,product_price = price)
+        p.save()
+        images_count = int(request.POST.get('images_count'))
+        print(images_count)
+        print(request.POST)
+        for i in range(1,images_count+1):
+            link = request.POST.get('image'+str(i))
+            print('image'+str(i))
+            img = ProductImage(product_id = p,image = link)
+            img.save()
+
+    # For deleting existing products
+    elif request.method == 'POST' and 'Delete' in request.POST:
+        id = request.POST.get('id')
+        p = Product(product_id = id)
+        p.delete() 
+
+
+    # For updating products
+    elif request.method == 'POST' and 'Update' in request.POST:
+        id = request.POST.get('id')
+        p = Product.objects.get(product_id = id)
+        p.product_name = request.POST.get('name')
+        p.product_desc = request.POST.get('desc')
+        p.product_price = request.POST.get('price')
+        p.save()
+    product = list(Product.objects.all())
+    productimage = list(ProductImage.objects.all())
+    return render(request, 'product.html',{"Product": product, "ProductImage": productimage})
+
 
 
 
