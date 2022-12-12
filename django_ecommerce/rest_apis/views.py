@@ -67,10 +67,18 @@ def product_api(request):
             return Response(product.data,status = 201)
         return Response(product.error,status = 400)
     elif request.method == 'GET':
+        # fetching product details using product_id
         if request.query_params.get('product_id'):
-            product = Product.objects.get(product_id=request.query_params['product_id'])
-            p = ProductSerializer(product)
-            return Response(p.data,status = 200)
+            id = request.query_params['product_id']
+            # exception handling if product id does not exist.
+            try:
+                product = Product.objects.get(product_id = id)
+                p = ProductSerializer(product)
+            except Product.DoesNotExist:
+                return Response({'error':'product with product_id = ' + id + ' does not exist!'},status = 404)
+            else:
+                return Response(p.data,status = 200)
+        # fetching all products.
         else:
             products = Product.objects.all()
             p = ProductSerializer(products,many = True)
