@@ -1,14 +1,27 @@
 from rest_framework import serializers
 from .models import Customer,Product,Order,OrderDetails,ProductImage
 
+# Using simple Serializer
+class CustomerSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=50)
+    email = serializers.CharField(max_length=100)
+    address = serializers.CharField(max_length=500)
+    mobile = serializers.CharField(max_length=15)
 
-class CustomerSerializer(serializers.ModelSerializer):
+    def create(self,validated_data):
+        # ** is for kwargs (key worded arguments) key, value.
+        print(validated_data)
+        return Customer.objects.create(**validated_data)
+
+    def update(self,instance,validated_data):
+        instance.name = validated_data.get('name',instance.name)
+        instance.email = validated_data.get('email',instance.email)
+        instance.address = validated_data.get('address',instance.address)
+        instance.moblie = validated_data.get('moblie',instance.moblie)
+        return instance
     
-    class Meta:
-        model = Customer
-        fields = ('customer_id','name','email','address','mobile')
 
-
+# Using inbuilt ModelSerializer
 class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -16,6 +29,7 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = ['product_id','product_name','product_desc','product_price']
         # exclude = ['image1','image2','image3']
 
+# Using inbuilt ModelSerializer
 class ProductImageSerializer(serializers.ModelSerializer):
 
     class Meta:

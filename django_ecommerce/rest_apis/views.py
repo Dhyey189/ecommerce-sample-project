@@ -7,14 +7,15 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.db import transaction
+from rest_framework.exceptions import NotFound
 # Create your views here.
 
 # Different ways to return data in views
 # HttpResponse for repsonse in http
 # JsonResponse for response in json
 # Response for response in any format
-# Render for rendering templates with contest dictionary in simple django fromaework
-# JSONParser for parsing JSON data simple 
+# Render for rendering templates with context dictionary in simple django framework
+# JSONParser for parsing JSON data
 
 
 # For parsing data 
@@ -25,16 +26,15 @@ from django.db import transaction
 
 
 @csrf_exempt
+# used simple Serializer
 def customer_api(request):
 
     if request.method == 'POST':
         data = JSONParser().parse(request)
-        print(data)
         customer = CustomerSerializer(data = data)
-        type(customer)
         if customer.is_valid():
-            customer.save()
-            print(customer.data['name'])
+            # not needed to call save method here bcz we have called create method in serializers itlself.
+            # customer.save()
             return JsonResponse(customer.data, status = 201)
         return JsonResponse(customer.error, status = 400)
     elif request.method == 'GET':
@@ -71,11 +71,12 @@ def product_api(request):
         if request.query_params.get('product_id'):
             id = request.query_params['product_id']
             # exception handling if product id does not exist.
+            # For excep
             try:
                 product = Product.objects.get(product_id = id)
                 p = ProductSerializer(product)
             except Product.DoesNotExist:
-                return Response({'error':'product with product_id = ' + id + ' does not exist!'},status = 404)
+                raise NotFound(detail = 'product with product_id = ' + id + ' does not exist!', code = 404)
             else:
                 return Response(p.data,status = 200)
         # fetching all products.
