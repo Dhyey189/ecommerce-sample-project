@@ -91,7 +91,10 @@ def manage_product(request):
             img.save()
 
     # For deleting existing products
-
+    # In this transaction if the product details is deleted then the tables order and order details need to be 
+    # deleted in sort the order should be cancelled, should be deleted from exsisting order and order details tables
+    # ideally the data should be moved to cancelled_orders table....
+    # below is the series of transcation of deletion of product along with deleting order and order details entries.
     elif request.method == 'POST' and 'Delete' in request.POST:
         with transaction.atomic():
             id = request.POST.get('id')
