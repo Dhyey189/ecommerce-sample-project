@@ -24,7 +24,7 @@ from rest_framework.exceptions import NotFound
 
 
 
-
+@api_view(['POST','GET'])
 @csrf_exempt
 # used simple Serializer
 def customer_api(request):
@@ -33,14 +33,15 @@ def customer_api(request):
         data = JSONParser().parse(request)
         customer = CustomerSerializer(data = data)
         if customer.is_valid():
-            # not needed to call save method here bcz we have called create method in serializers itlself.
-            # customer.save()
+            customer.save()
             return JsonResponse(customer.data, status = 201)
         return JsonResponse(customer.error, status = 400)
     elif request.method == 'GET':
         customer = Customer.objects.all()
-        c = CustomerSerializer(customer,many=True) 
-        return JsonResponse(c.data,safe = False,status = 200)
+        c = CustomerSerializer(customer,many=True)
+         
+        # return JsonResponse(c.data,safe = False,status = 200)
+        return Response(c.data,status = 200)
 
 @api_view(['POST','GET'])
 @transaction.atomic

@@ -10,7 +10,6 @@ class CustomerSerializer(serializers.Serializer):
 
     def create(self,validated_data):
         # ** is for kwargs (key worded arguments) key, value.
-        print(validated_data)
         return Customer.objects.create(**validated_data)
 
     def update(self,instance,validated_data):
