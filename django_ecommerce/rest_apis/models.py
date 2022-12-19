@@ -6,6 +6,7 @@ class Customer(models.Model):
     customer_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
     email = models.CharField(max_length=100)
+    password = models.CharField(max_length=50,default = 'Aa@1Bb*2')
     address = models.CharField(max_length=500)
     mobile = models.CharField(max_length=15)
 

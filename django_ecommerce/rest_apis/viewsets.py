@@ -11,13 +11,30 @@ class CustomerViewSet(viewsets.ModelViewSet):
     '''
     Methods provided by ModelViewSet
 
-    list => base/customer_api_viewset
-    retrieve => base/customer_api_viewset/id
-    
+    list => base/customer_api_viewset (get)
+    retrieve => base/customer_api_viewset/id (get)
+    create => base/customer_api_viewset (post)
+    update => base/customer_api_viewset/id (put)
+    destroy => base/customer_api_viewset/id (delete)
     '''
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
     lookup_field = 'pk' #default
+
+    def post(self,request):
+        data = JSONParser().parse(request)
+        customer = CustomerSerializer(data = data)
+        customer.is_valid(raise_exceptions=True)
+        self.perform_create(customer)
+        return Response(customer.data)
+    
+    def update(self,request,*args,**kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+
 
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):

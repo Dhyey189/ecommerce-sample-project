@@ -3,8 +3,10 @@ from .models import Customer,Product,Order,OrderDetails,ProductImage
 
 # Using simple Serializer
 class CustomerSerializer(serializers.Serializer):
+    customer_id = serializers.PrimaryKeyRelatedField(queryset=Customer.objects.all(),required=False)
     name = serializers.CharField(max_length=50)
     email = serializers.CharField(max_length=100)
+    password = serializers.CharField(max_length=50,default = 'Aa@1Bb*2',required=False)
     address = serializers.CharField(max_length=500)
     mobile = serializers.CharField(max_length=15)
 
@@ -15,8 +17,10 @@ class CustomerSerializer(serializers.Serializer):
     def update(self,instance,validated_data):
         instance.name = validated_data.get('name',instance.name)
         instance.email = validated_data.get('email',instance.email)
+        instance.password = validated_data.get('password',instance.password)
         instance.address = validated_data.get('address',instance.address)
-        instance.moblie = validated_data.get('moblie',instance.moblie)
+        instance.mobile = validated_data.get('mobile',instance.mobile)
+        instance.save()
         return instance
     
 

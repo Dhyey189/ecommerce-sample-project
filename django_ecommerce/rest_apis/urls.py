@@ -4,7 +4,7 @@ from . import views
 from . import viewsets
 
 router = routers.DefaultRouter()
-router.register('customer_api_viewset',viewsets.CustomerViewSet)
+router.register(r'customer_api_viewset',viewsets.CustomerViewSet)
 
 
 urlpatterns = [
