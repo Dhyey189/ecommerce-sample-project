@@ -1,11 +1,14 @@
 from rest_framework import serializers
 from .models import Customer,Product,Order,OrderDetails,ProductImage
 
+from rest_apis.validators import validate_email,unique_email
+
 # Using simple Serializer
 class CustomerSerializer(serializers.Serializer):
     customer_id = serializers.PrimaryKeyRelatedField(queryset=Customer.objects.all(),required=False)
     name = serializers.CharField(max_length=50)
-    email = serializers.CharField(max_length=100)
+    # used validators for checking if email is in valid email format and unique.
+    email = serializers.CharField(max_length=100,validators=[validate_email,unique_email])
     password = serializers.CharField(max_length=50,default = 'Aa@1Bb*2',required=False)
     address = serializers.CharField(max_length=500)
     mobile = serializers.CharField(max_length=15)

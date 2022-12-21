@@ -2,12 +2,14 @@ from django.urls import path,include
 from rest_framework import routers
 from . import views
 from . import viewsets
+from rest_framework.authtoken.views import obtain_auth_token
 
 router = routers.DefaultRouter()
 router.register(r'customer_api_viewset',viewsets.CustomerViewSet)
 
 
 urlpatterns = [
+    path('auth_token/',obtain_auth_token),
     path('customer_api/',views.customer_api),
     path('product_api/',views.product_api),
     path('api_auth/',include('rest_framework.urls')),

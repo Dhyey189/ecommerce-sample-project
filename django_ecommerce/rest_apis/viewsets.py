@@ -6,7 +6,14 @@ from .models import Customer,Product
 from .serializers import CustomerSerializer,ProductSerializer,ProductImageSerializer
 from rest_framework.parsers import JSONParser
 from rest_framework.exceptions import NotFound,NotAcceptable,APIException
+from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated,DjangoModelPermissions
+from rest_framework.authentication import SessionAuthentication,TokenAuthentication,BasicAuthentication
 
+from rest_apis.permissions import CustomDjangoModelPermissions
+from rest_apis.authentications import CustomTokenAuthentication
+
+# Implemented authentication classes and permission classes and validators(used in CustomerSerializers)
+# they can be specific to particular view or can be genralized to whole api in settings.py 
 class CustomerViewSet(viewsets.ModelViewSet):
     '''
     Methods provided by ModelViewSet
@@ -16,18 +23,51 @@ class CustomerViewSet(viewsets.ModelViewSet):
     create => base/customer_api_viewset (post)
     update => base/customer_api_viewset/id (put)
     destroy => base/customer_api_viewset/id (delete)
+
+    Classes which ModelViewSet inherits:- (mixins.CreateModelMixin,
+                   mixins.RetrieveModelMixin,
+                   mixins.UpdateModelMixin,
+                   mixins.DestroyModelMixin,
+                   mixins.ListModelMixin,
+                   GenericViewSet)
+    
     '''
+    
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
     lookup_field = 'pk' #default
 
-    def post(self,request):
-        data = JSONParser().parse(request)
-        customer = CustomerSerializer(data = data)
-        customer.is_valid(raise_exceptions=True)
-        self.perform_create(customer)
-        return Response(customer.data)
+    # Format = 'Authorization: Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b'
+    # authentication_classes = [TokenAuthentication]
+
+    # Format = 'Authorization: Bearer 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b'
+    authentication_classes = [CustomTokenAuthentication]
+
+    # authentication_classes = [SessionAuthentication]
+    # authentication_classes = [BasicAuthentication]
+
+    '''
+    used permission classes to check whether the entity requesting resourse is authorized or not.
+    different permission classes = [AllowAny,IsAuthenticated,IsAdminUser,IsAuthenticatedOrReadOnly,DjangoModelPermissions]
+
+    DjangoModelPerssions is the permission which all the users has over all models(basically the super user has given to all the users)
+    By default It allow get methods to all users but we can chage by creating custom permissions.
+    '''
+    # permission_classes = [DjangoModelPermissions]
+    permission_classes = [CustomDjangoModelPermissions]
     
+    '''
+    calling create method which uses create method of super class mixins.CreateModelMixin,
+    we can also skip this if we do not want any specific task to be done.
+    similarly for all other request like list, update, destroy etc.
+    '''
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+    
+    '''
+    Overriding update method of super class mixins.UpdateModelMixin 
+    but it can also be skipped, if we do not want any specific task to be done.
+    '''
     def update(self,request,*args,**kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data)
