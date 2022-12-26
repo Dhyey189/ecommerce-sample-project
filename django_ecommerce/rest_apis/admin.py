@@ -59,8 +59,17 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 
-admin.site.register(models.Customer)
-admin.site.register(models.Order)
+class OrderDetailsInline(admin.TabularInline):
+    model = models.OrderDetails
+    # raw_id_fields = ('product_id',)
+
+
+@admin.register(models.Order)
+class OrderAdmin(admin.ModelAdmin):
+    inlines = [ OrderDetailsInline,]
+
+# admin.site.register(models.Customer)
+# admin.site.register(models.Order)
 admin.site.register(models.OrderDetails)
 # admin.site.register(models.Product)
 admin.site.register(models.ProductImage)

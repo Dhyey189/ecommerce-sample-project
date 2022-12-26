@@ -32,9 +32,10 @@ class OrderDetails(models.Model):
     order_details_id = models.AutoField(primary_key=True)
     order_id = models.ForeignKey(Order,on_delete=models.CASCADE)
     product_id = models.ForeignKey(Product,on_delete=models.SET_NULL,null=True)
-    product_price = models.IntegerField()
+    product_price = models.IntegerField(default = 0)
     product_quantity = models.IntegerField()
-    subtotal = models.IntegerField()
+    subtotal = models.IntegerField(default = 0)
+
 
 '''
 In a nutshell, signals allow certain senders to notify a set of receivers that some action has taken place.
@@ -61,5 +62,8 @@ def tranfer_to_deleted_account_table(sender,instance,*args,**kwargs):
 def notify_customer_account_deleted(sender,instance,*args,**kwargs):
     print(f"send a goodbye email to the customer on {instance.email}")
 
-
+@receiver(pre_save, sender = OrderDetails)
+def set_sub_total(sender,instance,*args,**kwargs):
+    instance.product_price = instance.product_id.product_price
+    instance.subtotal = instance.product_quantity * instance.product_price
 # post_save.connect(notify_customer_account_created,sender = Customer)
