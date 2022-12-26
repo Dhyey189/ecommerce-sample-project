@@ -18,5 +18,5 @@ urlpatterns = [
     path('product_api_generics/update/<int:pk>',viewsets.ProductUpdateAPIView.as_view()),
     path('product_api_generics/delete/<int:pk>',viewsets.ProductDeleteAPIView.as_view())
 ]
-print(router.urls)
+
 urlpatterns += router.urls

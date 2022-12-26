@@ -1,5 +1,6 @@
 from django.db import models
-
+from django.db.models.signals import pre_save,post_save,pre_delete,post_delete
+from django.dispatch import receiver
 # Create your models here.
 
 class Customer(models.Model):
@@ -34,3 +35,31 @@ class OrderDetails(models.Model):
     product_price = models.IntegerField()
     product_quantity = models.IntegerField()
     subtotal = models.IntegerField()
+
+'''
+In a nutshell, signals allow certain senders to notify a set of receivers that some action has taken place.
+They're especially useful when many pieces of code may be interested in the same events. 
+Django's built-in signals let user code get notified of certain actions.
+
+Signals: pre_save, post_save, pre_delete, post_delete, m2m_changed.
+
+'''
+# taking an example
+@receiver(pre_save, sender = Customer)
+def notify_customer_verify_email(sender,instance,*args,**kwargs):
+    print(f"send a email verification link on {instance.email}")
+
+@receiver(post_save, sender = Customer)
+def notify_customer_account_created(sender,instance,created,*args,**kwargs):
+    print(f"send a welcome email to the customer on {instance.email}")
+
+@receiver(pre_delete, sender = Customer)
+def tranfer_to_deleted_account_table(sender,instance,*args,**kwargs):
+    print(f"Transfer the details of customer with id = {instance.customer_id} to deleted accounts table")
+
+@receiver(post_delete, sender = Customer)
+def notify_customer_account_deleted(sender,instance,*args,**kwargs):
+    print(f"send a goodbye email to the customer on {instance.email}")
+
+
+# post_save.connect(notify_customer_account_created,sender = Customer)
