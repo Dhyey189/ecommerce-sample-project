@@ -41,7 +41,7 @@ class CustomerViewSet(viewsets.ModelViewSet):
     # authentication_classes = [TokenAuthentication]
 
     # Format = 'Authorization: Bearer 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b'
-    authentication_classes = [CustomTokenAuthentication]
+    # authentication_classes = [CustomTokenAuthentication]
 
     # authentication_classes = [SessionAuthentication]
     # authentication_classes = [BasicAuthentication]
@@ -54,7 +54,7 @@ class CustomerViewSet(viewsets.ModelViewSet):
     By default It allow get methods to all users but we can chage by creating custom permissions.
     '''
     # permission_classes = [DjangoModelPermissions]
-    permission_classes = [CustomDjangoModelPermissions]
+    # permission_classes = [CustomDjangoModelPermissions]
     
     '''
     calling create method which uses create method of super class mixins.CreateModelMixin,

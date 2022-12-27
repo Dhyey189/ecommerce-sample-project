@@ -52,6 +52,7 @@ def notify_customer_verify_email(sender,instance,*args,**kwargs):
 
 @receiver(post_save, sender = Customer)
 def notify_customer_account_created(sender,instance,created,*args,**kwargs):
+    print(instance.customer_id)
     print(f"send a welcome email to the customer on {instance.email}")
 
 @receiver(pre_delete, sender = Customer)
