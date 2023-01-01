@@ -93,17 +93,29 @@ WSGI_APPLICATION = 'django_ecommerce.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'ecom_dev',
+#         'USER': 'root',
+#         'PASSWORD': 'root',
+#         'HOST': 'host.docker.internal',
+#         'PORT': '3306',
+#     }
+# }
+ 
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'django-ecommerce',
-        'USER': 'Dhyey',
-        'PASSWORD': 'dhyey@123',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'ecom_dev', 
+        'USER': 'root', 
+        'PASSWORD': 'root',
+        'HOST': 'db', 
+        'PORT': '5432',
     }
 }
- 
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
