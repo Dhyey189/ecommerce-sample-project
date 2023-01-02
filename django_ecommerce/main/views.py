@@ -3,6 +3,9 @@ from .models import Customer,Order,OrderDetails,Product,ProductImage
 from django.db import transaction
 # Create your views here.
 
+def welcome(request):
+    return render(request,'welcome.html')
+
 @transaction.atomic
 def home(request):
     customer = list(Customer.objects.all())

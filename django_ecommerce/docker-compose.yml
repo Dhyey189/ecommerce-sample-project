@@ -14,7 +14,7 @@ services:
       POSTGRES_DB: ecom_dev
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn django_ecommerce.wsgi -b 0.0.0.0:8000
     restart: always
     volumes:
       - .:/app
@@ -22,5 +22,12 @@ services:
       - "8000:8000"
     depends_on:
       - db
+  nginx:
+    build : nginx
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - web
 
 # socket=/var/run/mysqld/mysqld.sock
