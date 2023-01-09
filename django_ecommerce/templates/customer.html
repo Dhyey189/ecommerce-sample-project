@@ -1,10 +1,9 @@
 <h2>Create Customer</h2>
 <form method="post">{% csrf_token %}
-    <input type = "text" name = "name" placeholder = "Name"/>
-    <input type = "text" name = "email" placeholder = "email"/>
-    <input type = "text" name = "address" placeholder = "address"/>
-    <input type = "text" name = "mobile" placeholder = "mobile"/>
-    <input type = "submit" name= "Create" value = "Create">
+    {{CustomerForm}}
+    <br>
+    <br>
+    <input type = "submit" name= "Create"  value = "Create">
 </form>
 
 <h2>Find Customer by ID</h2>
@@ -26,6 +25,7 @@
                     <td>{{i.customer_id}}</td>
                     <td>{{i.name}}</td>
                     <td>{{i.email}}</td>
+                    <td>{{i.password}}</td>
                     <td>{{i.address}}</td>
                     <td>{{i.mobile}}</td>
             {% endfor %}
@@ -40,6 +40,7 @@
       <th>customer_id</th>
       <th>name</th>
       <th>email</th>
+      <th>password</th>
       <th>address</th>
       <th>mobile</th>
     </tr>
@@ -51,6 +52,7 @@
                 <input type="hidden" name="id" value = {{i.customer_id}}>
                 <td><input type = "text" name="name" value = {{i.name}}></td>
                 <td><input type = "text" name="email" value = {{i.email}}></td>
+                <td><input type = "text" name="password" value = {{i.password}}></td>
                 <td><input type = "text" name="address" value = {{i.address}}></td>
                 <td><input type = "text" name="mobile" value = {{i.mobile}}></td>
                 <td><input type = "submit" name = "Update" value = "update"></td>

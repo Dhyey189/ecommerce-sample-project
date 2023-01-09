@@ -1,36 +1,19 @@
-{% comment %} <script type="text/javascript">
-    var cnt = 0;
-    function add_image_link_tags() {
-        cnt++;
-        var objTo = document.getElementById('create_product')
-        var newele = document.createElement("input");
-        newele.innerHTML = `<input type="text" name="image${cnt.toString()}" placeholder="Link" />`;
-        objTo.appendChild(newele);
-    }
-    function get_count(){
-        var x = document.getElementById('images_count');
-        x.value = cnt;
-    }
-</script> {% endcomment %}
+{% load static %}
 <h2>Create Product</h2>
 <form method="post"  id = "create_product">{% csrf_token %}
-    <input type = "text" name = "name" placeholder = "Name"/>
-    <textarea name = "desc" placeholder = "Description" type = "text"></textarea>
-    <input type = "text" name = "price" placeholder = "price"/>
-    <input type = "text" name = "image1" placeholder = "Link1"/>
-    <input type = "text" name = "image2" placeholder = "Link2"/>
-    <input type = "text" name = "image3" placeholder = "Link3"/>
+    {{ProductForm.as_p}}
     <input type = "submit" name= "Create" value = "Create"/>
-    <input type="hidden" name = "images_count" id = "images_count" value = "3" />
 </form>
-<h2>Update or Delete customer details</h2>
+<h2>Update or Delete product details</h2>
 <table style="width:400px" border="2">
     <tr align="center">
       <th>product_id</th>
       <th>Product Name</th>
       <th>Product Description</th>
       <th>Product Price</th>
-      <th colspan="100%">Product Images Link</th>
+      <th> Update Product </th>
+      <th> Delete Product </th>
+      <th >Product Images</th>
     </tr>
         {% for i in Product %}
         <tr align="center">
@@ -41,15 +24,19 @@
                 <td><input type = "text" name="name" value = {{i.product_name}}></td>
                 <td><input type = "text" name="desc" value = {{i.product_desc}}></td>
                 <td><input type = "text" name="price" value = {{i.product_price}}></td>
-                {% for j in ProductImage %}
-                    {% if i.product_id == j.product_id.product_id %}
-                        <td >{{j.image}}</td>
-                    {% endif %}
-                {% endfor %}
                 <td><input type = "submit" name = "Update" value = "update"></td>
                 <td><input type = "submit" name = "Delete" value = "Delete"></td>
+                {% for j in ProductImage %}
+                    {% if i.product_id == j.product_id.product_id %}
+                        <td ><img src="{{j.image.url}}" height="100" widht="50"  alt="No image"></td>
+                    {% endif %}
+                {% endfor %}
             </form>
         </tr>
         {% endfor %}
-    
-  </table>
+        
+    </table>
+    <form method="post" enctype="multipart/form-data"> {% csrf_token %}
+    {{ProductImageForm}}
+    <td><input type = "submit" name = "upload_image"></td>
+    </form>

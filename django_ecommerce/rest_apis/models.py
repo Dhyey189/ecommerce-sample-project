@@ -20,7 +20,8 @@ class Product(models.Model):
 class ProductImage(models.Model):
     product_image_id = models.AutoField(primary_key=True)
     product_id = models.ForeignKey(Product,on_delete=models.CASCADE)
-    image = models.CharField(max_length=2000)
+    image = models.ImageField(upload_to='images/')
+
 
 class Order(models.Model):
     order_id = models.AutoField(primary_key=True)
