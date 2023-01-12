@@ -1,11 +1,13 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from django import forms
 from . import models
 # Register your models here.
 
 class ProductPriceFilter(admin.SimpleListFilter):
     title = 'Price Filter'
     parameter_name = 'product_price'
+
 
     def lookups(self, request, model_admin):
 
@@ -57,6 +59,19 @@ class ProductAdmin(admin.ModelAdmin):
     def view_product(self,obj):
         return format_html(f'<button ><a href=http://127.0.0.1:8000/admin/rest_apis/product/{obj.product_id}/change/ target="_blank">view</a></button>')
 
+class CustomerForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['mobile'].required = False
+    class Meta:
+        model = models.Customer
+        fields = ['name', 'email', 'password', 'address','mobile']
+        
+
+
+@admin.register(models.Customer)
+class CustomerAdmin(admin.ModelAdmin):
+    form = CustomerForm
 
 
 class OrderDetailsInline(admin.TabularInline):
@@ -68,10 +83,7 @@ class OrderDetailsInline(admin.TabularInline):
 class OrderAdmin(admin.ModelAdmin):
     inlines = [ OrderDetailsInline,]
 
-admin.site.register(models.Customer)
-# admin.site.register(models.Order)
 admin.site.register(models.OrderDetails)
-# admin.site.register(models.Product)
 admin.site.register(models.ProductImage)
 
 # inlines, custom list filter, 

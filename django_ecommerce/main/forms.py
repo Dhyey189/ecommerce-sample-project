@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from rest_apis.models import ProductImage
+
 class CustomerForms(forms.Form):
     name = forms.CharField(max_length=200,required=True)
     email = forms.CharField(max_length=200,required=True)
