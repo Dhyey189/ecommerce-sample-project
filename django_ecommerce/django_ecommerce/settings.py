@@ -112,7 +112,7 @@ DATABASES = {
         'NAME': 'ecom_dev', 
         'USER': 'root', 
         'PASSWORD': 'root',
-        'HOST': 'db', 
+        'HOST': '49.36.71.99', 
         'PORT': '5432',
     }
 }

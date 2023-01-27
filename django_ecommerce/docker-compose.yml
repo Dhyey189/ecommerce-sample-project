@@ -6,12 +6,12 @@ services:
   #   environment:
   #     MYSQL_ROOT_PASSWORD: root
   #     MYSQL_DATABASE: ecom_dev
-  db:
-    image: postgres:15
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: ecom_dev
+  # db:
+  #   image: postgres:15
+  #   environment:
+  #     POSTGRES_USER: root
+  #     POSTGRES_PASSWORD: root
+  #     POSTGRES_DB: ecom_dev
   web:
     build: .
     command: gunicorn django_ecommerce.wsgi -b 0.0.0.0:8000
@@ -20,8 +20,6 @@ services:
       - .:/app
     ports:
       - "8000:8000"
-    depends_on:
-      - db
   nginx:
     build : nginx
     restart: always
