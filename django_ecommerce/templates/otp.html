@@ -1,0 +1,11 @@
+<html>
+    <body>
+        <div style="border: 1px solid; margin:auto;width:400px; ">
+            <h3>Otp has been send to {{email}} mail.</h3>
+            <form method="post" >{% csrf_token %}
+                {{OtpForm.as_p}}
+                <input type=submit name="verify" value="Verify code">
+            </form>
+        </div>
+    </body>
+</html>

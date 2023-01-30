@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     'rest_apis',
     'rest_framework',
     'rest_framework.authtoken',
+    'authentication'
 ]
-
 
 
 MIDDLEWARE = [
@@ -146,6 +146,14 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
+
+# oefqlxbcnxhxvlfy
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = '19ceuos145@ddu.ac.in'
+EMAIL_HOST_PASSWORD = 'oefqlxbcnxhxvlfy'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
