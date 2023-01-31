@@ -1,0 +1,11 @@
+<html>
+    <body>
+        <div style="border: 1px solid; margin:auto;width:400px; ">
+            <h1>Login {{failed}}</h1>
+            <form method="post" >{% csrf_token %}
+                <input type="text" name="email" placeholder="Email">
+                <input type="submit" name="login" value="login"/>
+            </form>
+        </div>
+    </body>
+</html>

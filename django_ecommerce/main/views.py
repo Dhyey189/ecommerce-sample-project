@@ -6,6 +6,7 @@ from .forms import CustomerForms,ProductForm,ProductImageForm
 
 @transaction.atomic
 def home(request):
+    user = request.session.get('user')
     customer = list(Customer.objects.all())
     order = list(Order.objects.all())
     orderdetails = list(OrderDetails.objects.all())
@@ -23,7 +24,7 @@ def home(request):
         od  = OrderDetails(product_price = p.product_price,product_quantity = product_quantity, subtotal = int(p.product_price)*int(product_quantity) , order_id = o, product_id = p) 
         od.save()
 
-    return render(request, 'home.html', {"Customer": customer, "Order": order, "OrderDetails": orderdetails,"Product": product, "ProductImage": productimage})
+    return render(request, 'home.html', {"user":user,"Customer": customer, "Order": order, "OrderDetails": orderdetails,"Product": product, "ProductImage": productimage})
 
 
 

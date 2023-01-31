@@ -1,0 +1,11 @@
+<html>
+    <body>
+        <div style="border: 1px solid; margin:auto;width:400px; ">
+            <h1>SignUp</h1>
+            <form method="post" >{% csrf_token %}
+                {{SignupForm.as_p}}
+                <input type="submit" name="sign up"/>
+            </form>
+        </div>
+    </body>
+</html>
