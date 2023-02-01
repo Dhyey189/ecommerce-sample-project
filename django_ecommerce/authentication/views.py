@@ -19,7 +19,7 @@ def signup(request):
         if form.is_valid():
             
             user = form.save()
-            return redirect('../otp/'+str(user.id))
+            return redirect('../otp/'+str(user.id)+'/')
         return render(request,'signup.html' , {'SignupForm' : form,'error' : form.errors})
 
     return render(request,'signup.html',{'SignupForm' : form})
@@ -33,7 +33,7 @@ def otp(request,id = None):
     user = User.objects.get(id = id)
     if user is None or id is None:
         return redirect('authentication/signup')
-    elif request.method == 'POST' and 'verify' in request.POST:
+    elif request.method == 'POST':
         otp_form = OtpForm(request.POST)
         if otp_form.is_valid() and str(user.otp) == request.POST.get('otp'):
             user.is_verified = True
@@ -41,6 +41,7 @@ def otp(request,id = None):
             # create session
             request.session['user'] = {'name':user.name, 'email':user.email, 'phone_number' : user.phone_number}
             return redirect('../../../')
+        print("Here")
     else:
         num = random.randint(1000,9999)
         user.otp = num
@@ -68,6 +69,6 @@ def login(request):
         else:
             user.is_verified = True
             user.save()
-            return redirect('../otp/'+str(user.id))
+            return redirect('../otp/'+str(user.id)+'/')
     else:
         return render(request,'login.html')
